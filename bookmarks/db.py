@@ -64,6 +64,6 @@ class Bookmark(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     value = Column(String, nullable=False)
-    group_id = Column(Integer, ForeignKey('groups.id'), nullable=False)
+    group_id = Column(Integer, ForeignKey('groups.id'))
 
     group = relationship('Group', back_populates='bookmarks')
