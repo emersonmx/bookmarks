@@ -12,7 +12,7 @@ def list(dump_json):
     else:
         result = ''
         for g in repo.all():
-            result += '[{}] {}\n'.format(g.id, g.name)
+            result += '[{}] {}\n'.format(g.id, g.breadcrumb())
         return result
 
 

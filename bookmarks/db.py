@@ -66,6 +66,14 @@ class Group(Base):
             result['parent_id'] = self.parent_id
         return result
 
+    def breadcrumb(self):
+        def make(g):
+            if g.parent_id:
+                return make(g.parent) + ' > ' + g.name
+            return g.name
+
+        return make(self)
+
 
 class Bookmark(Base):
     __tablename__ = 'bookmarks'
