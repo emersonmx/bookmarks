@@ -1,6 +1,6 @@
 import click
 
-from bookmarks import add, init
+from bookmarks import init, group
 
 
 @click.group()
@@ -9,4 +9,4 @@ def cli():
 
 
 cli.add_command(init.command)
-cli.add_command(add.command)
+cli.add_command(group.group)
