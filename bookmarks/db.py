@@ -14,6 +14,7 @@ _DATABASE_PATH = os.path.join(config.PATH, 'bookmarks.db')
 
 _engine = create_engine('sqlite:///{}'.format(_DATABASE_PATH))
 Session = sessionmaker(bind=_engine)
+Base = declarative_base()
 
 
 @contextmanager
@@ -27,9 +28,6 @@ def session_scope():
         raise
     finally:
         session.close()
-
-
-Base = declarative_base()
 
 
 def setup():
