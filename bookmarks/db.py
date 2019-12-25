@@ -22,7 +22,7 @@ def session_scope():
     try:
         yield session
         session.commit()
-    except:  # noqa E722
+    except:  # noqa
         session.rollback()
         raise
     finally:
