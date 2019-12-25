@@ -12,7 +12,7 @@ def add(**kwargs):
         group_id = kwargs.get('group_id', None)
         b = db.Bookmark(
             name=kwargs.get('name'),
-            value=kwargs.get('value'),
+            url=kwargs.get('url'),
             group_id=group_id
         )
         s.add(b)

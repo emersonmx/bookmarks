@@ -56,12 +56,18 @@ class Group(Base):
     )
     bookmarks = relationship('Bookmark', back_populates='group')
 
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Bookmark(Base):
     __tablename__ = 'bookmarks'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    value = Column(String, nullable=False)
+    url = Column(String, nullable=False)
     group_id = Column(Integer, ForeignKey('groups.id'))
 
     group = relationship('Group', back_populates='bookmarks')
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -14,15 +14,15 @@ def list():
         group = ''
         if b.group:
             group = ' {{{}}}'.format(b.group.name)
-        click.echo('[{}] {} ({}){}'.format(b.id, b.name, b.value, group))
+        click.echo('[{}] {} ({}){}'.format(b.id, b.name, b.url, group))
 
 
 @group.command()
 @click.option('--group', 'group_id', type=int)
 @click.argument('name')
-@click.argument('value')
-def add(name, value, group_id):
-    b = repo.add(name=name, value=value, group_id=group_id)
+@click.argument('url')
+def add(name, url, group_id):
+    b = repo.add(name=name, url=url, group_id=group_id)
     click.echo('Bookmark "{}" with id {} was created'.format(b.name, b.id))
 
 
