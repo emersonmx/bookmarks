@@ -1,3 +1,4 @@
+import os
 import click
 
 from contextlib import contextmanager
@@ -7,7 +8,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship, backref
 
-_engine = create_engine('sqlite:///bookmarks.db')
+from bookmarks import config
+
+_DATABASE_PATH = os.path.join(config.PATH, 'bookmarks.db')
+
+_engine = create_engine('sqlite:///{}'.format(_DATABASE_PATH))
 Session = sessionmaker(bind=_engine)
 
 
@@ -28,12 +33,18 @@ Base = declarative_base()
 
 
 def setup():
+    config.setup()
+
+    if os.path.exists(_DATABASE_PATH):
+        click.echo('Database exists!')
+        return
+
     Base.metadata.create_all(_engine)
     with session_scope() as session:
-        group = Group(name='Root')
+        group = Group(name='Bookmarks')
         session.add(group)
 
-    click.echo('Database created')
+    click.echo('Database created!')
 
 
 class Group(Base):
