@@ -3,21 +3,26 @@ from bookmarks import db
 
 def all():
     with db.session_scope() as s:
-        return s.query(db.Bookmark).all()
+        for o in s.query(db.Bookmark).all():
+            yield o
 
 
 def add(**kwargs):
     with db.session_scope() as s:
-        parent_id = kwargs.get('parent_id', None)
-        g = db.Bookmark(name=kwargs.get('name'), parent_id=parent_id)
-        s.add(g)
+        group_id = kwargs.get('group_id', None)
+        b = db.Bookmark(
+            name=kwargs.get('name'),
+            value=kwargs.get('value'),
+            group_id=group_id
+        )
+        s.add(b)
         s.flush()
-        s.expunge(g)
-        return g
+        s.expunge(b)
+        return b
 
 
-def remove(gid):
+def remove(bid):
     with db.session_scope() as s:
-        g = s.query(db.Bookmark).get(gid)
-        s.delete(g)
-        return g
+        b = s.query(db.Bookmark).get(bid)
+        s.delete(b)
+        return b

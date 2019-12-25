@@ -1,11 +1,6 @@
 from bookmarks import db
 
 
-def all():
-    with db.session_scope() as s:
-        return s.query(db.Group).all()
-
-
 def get_parents():
     with db.session_scope() as s:
         groups = s.query(db.Group).filter(db.Group.parent_id == None)  # noqa
