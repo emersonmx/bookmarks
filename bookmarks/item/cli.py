@@ -18,9 +18,9 @@ def list():
 
 
 @group.command()
+@click.option('--name')
+@click.option('--url')
 @click.option('--group', 'group_id', type=int)
-@click.argument('name')
-@click.argument('url')
 def add(name, url, group_id):
     b = repo.add(name=name, url=url, group_id=group_id)
     click.echo('Bookmark "{}" with id {} was created'.format(b.name, b.id))
