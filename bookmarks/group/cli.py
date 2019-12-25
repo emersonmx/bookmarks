@@ -1,3 +1,4 @@
+import json
 import click
 
 from bookmarks.group import repo
@@ -9,9 +10,16 @@ def group():
 
 
 @group.command()
-def list():
-    for g in repo.get_parents():
-        _list_group(g)
+@click.option('--dump-json', is_flag=True)
+def list(dump_json):
+    if dump_json:
+        result = []
+        for g in repo.all():
+            result.append(g.to_dict())
+        click.echo(json.dumps(result))
+    else:
+        for g in repo.all():
+            click.echo('[{}] {}'.format(g.id, g.name))
 
 
 @group.command()
@@ -27,10 +35,3 @@ def add(name, parent):
 def delete(group_id):
     g = repo.remove(group_id)
     click.echo('Group "{}" with id {} was deleted'.format(g.name, g.id))
-
-
-def _list_group(g, i=0):
-    indent = '    ' * i
-    click.echo('{}[{}] {}'.format(indent, g.id, g.name))
-    for c in g.children:
-        _list_group(c, i + 1)

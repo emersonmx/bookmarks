@@ -52,12 +52,19 @@ class Group(Base):
     parent_id = Column(Integer, ForeignKey('groups.id'))
 
     children = relationship(
-        'Group', backref=backref('parent', remote_side=[id])
+        'Group',
+        backref=backref('parent', remote_side=[id]),
+        cascade='all, delete-orphan'
     )
-    bookmarks = relationship('Bookmark', back_populates='group')
+    bookmarks = relationship(
+        'Bookmark', back_populates='group', cascade='all, delete-orphan'
+    )
 
     def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        result = {'id': self.id, 'name': self.name}
+        if self.parent_id:
+            result['parent_id'] = self.parent_id
+        return result
 
 
 class Bookmark(Base):
@@ -70,4 +77,7 @@ class Bookmark(Base):
     group = relationship('Group', back_populates='bookmarks')
 
     def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        result = {'id': self.id, 'name': self.name, 'url': self.url}
+        if self.group_id:
+            result['group_id'] = self.group_id
+        return result

@@ -1,10 +1,9 @@
 from bookmarks import db
 
 
-def get_parents():
+def all():
     with db.session_scope() as s:
-        groups = s.query(db.Group).filter(db.Group.parent_id == None)  # noqa
-        for o in groups:
+        for o in s.query(db.Group).all():
             yield o
 
 
