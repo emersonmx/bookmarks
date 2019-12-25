@@ -3,7 +3,7 @@ import click
 from bookmarks.group import repo
 
 
-@click.group()
+@click.group(name='group')
 def group():
     pass
 
