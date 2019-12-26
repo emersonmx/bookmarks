@@ -4,14 +4,15 @@ from bookmarks.group import repo
 
 
 def list(dump_json):
+    groups = repo.all()
     if dump_json:
-        groups = []
-        for g in repo.all():
-            groups.append(g.to_dict())
-        return json.dumps({'data': groups})
+        result = []
+        for g in groups:
+            result.append(g.to_dict())
+        return json.dumps({'data': result})
     else:
         result = ''
-        for g in repo.all():
+        for g in groups:
             result += '[{}] {}\n'.format(g.id, g.breadcrumb())
         return result
 

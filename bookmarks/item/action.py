@@ -4,16 +4,17 @@ from bookmarks.item import repo
 
 
 def list(dump_json):
+    bookmarks = repo.all()
     if dump_json:
-        bookmarks = []
-        for g in repo.all():
-            bookmarks.append(g.to_dict())
-        return json.dumps({'data': bookmarks})
+        result = []
+        for b in bookmarks:
+            result.append(b.to_dict())
+        return json.dumps({'data': result})
     else:
         result = ''
-        for g in repo.all():
-            group = ' {{{}}}'.format(g.group.name) if g.group else ''
-            result += '[{}] {} ({}){}\n'.format(g.id, g.name, g.url, group)
+        for b in bookmarks:
+            bookmark = ' {{{}}}'.format(b.group.name) if b.group else ''
+            result += '[{}] {} ({}){}\n'.format(b.id, b.name, b.url, bookmark)
         return result
 
 
