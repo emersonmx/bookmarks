@@ -46,10 +46,23 @@ class Group(Base):
         'Bookmark', back_populates='group', cascade='all, delete-orphan'
     )
 
-    def to_dict(self):
+    def to_dict(self, **kwargs):
         result = {'id': self.id, 'name': self.name}
-        if self.parent_id:
-            result['parent_id'] = self.parent_id
+        if self.parent:
+            if kwargs.get('eager', False):
+                result['parent'] = self.parent.to_dict()
+            else:
+                result['parent_id'] = self.parent_id
+        if self.bookmarks:
+            if kwargs.get('eager', False):
+                result['bookmarks'] = list(
+                    map(lambda o: o.to_dict(), self.bookmarks)
+                )
+        if self.children:
+            if kwargs.get('eager', False):
+                result['children'] = list(
+                    map(lambda o: o.to_dict(), self.children)
+                )
         return result
 
     def breadcrumb(self):
@@ -70,10 +83,13 @@ class Bookmark(Base):
 
     group = relationship('Group', back_populates='bookmarks')
 
-    def to_dict(self):
+    def to_dict(self, **kwargs):
         result = {'id': self.id, 'name': self.name, 'url': self.url}
-        if self.group_id:
-            result['group_id'] = self.group_id
+        if self.group:
+            if kwargs.get('eager', False):
+                result['group'] = self.group.to_dict()
+            else:
+                result['group_id'] = self.group_id
         return result
 
 
