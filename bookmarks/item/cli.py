@@ -27,5 +27,5 @@ def add(name, url, group_id):
 @group.command()
 @click.argument('id_', metavar='ID')
 def delete(id_):
-    b = action.remove(id_)
+    b = action.delete(id_)
     click.echo('Bookmark "{}" with id {} was deleted'.format(b.name, b.id))

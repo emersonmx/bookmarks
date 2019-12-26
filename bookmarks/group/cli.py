@@ -25,5 +25,5 @@ def add(name, parent):
 @group.command()
 @click.argument('id_', metavar='ID')
 def delete(id_):
-    g = action.remove(id_)
+    g = action.delete(id_)
     click.echo('Group "{}" with id {} was deleted'.format(g.name, g.id))

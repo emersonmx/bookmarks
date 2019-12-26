@@ -22,4 +22,4 @@ def add(**kwargs):
 
 
 def delete(id_):
-    return repo.remove(id_)
+    return repo.delete(id_)
